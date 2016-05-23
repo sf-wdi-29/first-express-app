@@ -15,7 +15,8 @@ app.use('view engine', 'ejs');
 
 app.get('/', function(req, res){
     console.log("hello from root route");
-    res.send("You're home \n");
+    // res.send("You're home \n");
+    res.render('index', {header: 'index'});
 });
 
 app.get('/api/taquerias', function(req, res){
