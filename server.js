@@ -3,6 +3,7 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
+const router = express.Router();
 
 const taquerias = [
     {restaurant: "La Taqueria", id: 14},
@@ -10,18 +11,34 @@ const taquerias = [
     {restaurant: "Taqueria Cancun", id: 35}
 ];
 
-app.use('views', './views');
-app.use('view engine', 'ejs');
+app.set('views', './views');
+app.set('view engine', 'ejs');
 
-app.get('/', function(req, res){
+app.use('/', router);
+
+router.get('/', function(req, res){
     console.log("hello from root route");
     // res.send("You're home \n");
     res.render('index', {header: 'index'});
 });
 
-app.get('/api/taquerias', function(req, res){
+router.get('/form', function(req, res){
+    res.render('form', {header: 'form'});
+});
+
+
+router.get('/api/taquerias', function(req, res){
     res.json(taquerias);
 });
+
+router.get('/api/taquerias/:id', function(req, res){
+    for(var i = 0; i < taquerias.length; i++){
+        if( req.params.id == taquerias[i].id){
+            res.json(taquerias[i]);
+        }
+    }
+});
+
 
 app.listen(port, function(){
     console.log("Server started on port: ", port);
