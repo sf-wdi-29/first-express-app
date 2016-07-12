@@ -4,6 +4,9 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 const router = express.Router();
+const  bodyParser = require('body-parser');
+
+const urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 const taquerias = [
     {restaurant: "La Taqueria", id: 14},
@@ -36,6 +39,19 @@ router.get('/api/taquerias/:id', function(req, res){
         if( req.params.id == taquerias[i].id){
             res.json(taquerias[i]);
         }
+    }
+});
+
+router.post('/api/taquerias', urlencodedParser, function(req, res){
+    if (!req.body){
+     return res.sendStatus(400);
+     } else {
+        if (typeof(req.body.id === 'string')){
+            var numericId = parseInt(req.body.id);
+            req.body.id = numericId;
+        };
+        taquerias.push(req.body);
+        res.json(taquerias);
     }
 });
 
